@@ -19,7 +19,7 @@
 				if ("session".equals(cookie.getName())) {
 					//则读取这个cookie的值，再得到sessionid  
 					//然后再根据sessionid，获取储存在应用域中的session对象  
-					//强转后，赋值给当前session对象，因为jsp中session对象已经被自动创建，所以这里只需要赋值  
+					//强转后(因为是用的application对象)，赋值给当前session对象，因为jsp中session对象已经被自动创建，所以这里只需要赋值  
 					session = (HttpSession) application.getAttribute(cookie.getValue());
 				}
 			}
