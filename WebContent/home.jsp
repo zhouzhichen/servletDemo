@@ -30,29 +30,38 @@
 	</table>
 	<br> 请输入文件名
 	<input type="text" id="files">
+	<!-- 只有表单和超链接可以把参数传到request里面，servlet才可以得到参数
+									所以这里在js里面用对象得到相应参数，在location传参 -->
 	<input type="button" onclick="choose()" name="buttons">
 	<a href="Insert.jsp">添加</a>
 	<a href="Servlet?method=previous">上一页</a>
 	<a href="Servlet?method=next">下一页</a>
 	<jsp:useBean id="pagee" class="pageDao.PageDao"></jsp:useBean>
 	${a }/<%=pagee.totalPage()%>
+	<form action="Servlet?method=upload" method="post"
+		enctype="multipart/form-data">
+		<input type="file" name="filename"> <input type="submit"
+			value="提交">
+	</form>
+<a href="ShowServlet">选择下载文件</a>
 </body>
 <script type="text/javascript">
 	function choose() {
 		var abc = "";
-		var files=document.getElementById("files").value;
+		var files = document.getElementById("files").value;
 		var list = document.getElementsByName("choose");
 		for (var i = 0; i < list.length; i++) {
 			if (list[i].checked == true) {
-				if (abc=="") {
+				if (abc == "") {
 					abc = abc + list[i].value;
 				} else {
 					abc = abc + "," + list[i].value;
 				}
 			}
 		}
-
-		location.href = "Servlet?method=choose&abc=" + abc+"&files="+files;
+		//这里用location跳转页面，并实现传参(本项目用js得到了页面显示的相应id，并封装到String里面，在servlet里面
+		//		和Dao层里面封装User类并把数据库里的东西转到了Excel里面)
+		location.href = "Servlet?method=choose&abc=" + abc + "&files=" + files;
 	}
 </script>
 </html>
