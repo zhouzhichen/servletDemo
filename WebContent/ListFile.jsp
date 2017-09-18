@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,11 +8,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<c:forEach var="i" items="${fileNameMap }">
-		<c:url value="ShowServlet" var="downyrl">
+	<!-- c标签配合el表达式遍历map集合 -->
+	<c:forEach var="me" items="${fileNameMap }">
+		<!--给a标签设置servlet跳转页面，el表达式的用法  -->
+		<c:url value="DownloadServlet" var="downurl">
+			<!-- 每一个"${me.key }"对应的都是一个初始名，servlet可以通过getParameter（"filename"） 得到${me.key }-->
 			<c:param name="filename" value="${me.key }"></c:param>
 		</c:url>
-			${me.value }<a href="${downurl }">下载</a>
+			${me.value }
+			<a href="${downurl }">下载</a>
 	</c:forEach>
 </body>
 </html>

@@ -9,9 +9,11 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -47,9 +49,22 @@ public class Servlet extends HttpServlet {
 		if ("login".equals(method)) {
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
+			String free = request.getParameter("free");
 			if (UserDao.login(Integer.parseInt(id), name) != null) {
 				List li = UserDao.last(1);
 				request.setAttribute("li", li);
+				if ("true".equals(free)) {
+					HttpSession session = request.getSession(); // 得到session
+					session.setAttribute("name", name);
+					session.setAttribute("id", id);
+					Cookie cookie = new Cookie("session", session.getId());
+					cookie.setMaxAge(60);
+					response.addCookie(cookie);
+					//此时需要在应用域中添加一个属性，用于储存用户的sessionid和对应的session关系  
+					//以保证后面可以根据sessionid获取到session  
+					getServletContext().setAttribute(session.getId(), session); 
+					
+				}
 				request.getRequestDispatcher("home.jsp").forward(request, response);
 			}
 		}
@@ -73,10 +88,11 @@ public class Servlet extends HttpServlet {
 		}
 		if ("previous".equals(method)) {
 			/*
-			 * int allow=Integer.parseInt(request.getParameter("a")); if(allow==1){ allow=2;
-			 * UserDao.previous(allow);
+			 * int allow=Integer.parseInt(request.getParameter("a"));
+			 * if(allow==1){ allow=2; UserDao.previous(allow);
 			 * 
-			 * }else { UserDao.previous(allow); } request.setAttribute("a", allow-1);
+			 * }else { UserDao.previous(allow); } request.setAttribute("a",
+			 * allow-1);
 			 */
 			List li = new ArrayList();
 			if (a == 1) {
@@ -126,12 +142,13 @@ public class Servlet extends HttpServlet {
 			li = UserDao.choose(s);
 			UserDao.MysqltoExcel(li, str1, response);
 			request.setAttribute("li", li);
-			// request.getRequestDispatcher("home.jsp").forward(request, response);
+			// request.getRequestDispatcher("home.jsp").forward(request,
+			// response);
 		}
 		if ("upload".equals(method)) {
 			fileControl(request, response);
 		}
-	
+
 	}
 
 	/**
@@ -172,7 +189,8 @@ public class Servlet extends HttpServlet {
 					String name = item.getFieldName();
 					// 解决普通输入项的中文乱码问题
 					String value = item.getString("utf-8");
-					// 或者用 String value=new String(value.getBytes("iso-8859-1"),"utf-8");
+					// 或者用 String value=new
+					// String(value.getBytes("iso-8859-1"),"utf-8");
 					System.out.println(name + "=" + value);
 				} else {
 					// 如果fileitem中封装的是上传文件
@@ -212,10 +230,5 @@ public class Servlet extends HttpServlet {
 		}
 
 	}
-
-
-	
-
-	
 
 }

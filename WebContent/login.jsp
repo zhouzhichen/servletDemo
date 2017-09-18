@@ -12,7 +12,10 @@
 	<!-- <input type="hidden" name="a" value="1"> -->
 	id：<input type="text" name="id">
 	姓名：<input type="text" name="name">
+	<br>
+	<input type="checkbox" name="free" >十天免登陆
 	<input type="submit" value="提交">
 </form>
 </body>
+
 </html>

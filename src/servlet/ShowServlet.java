@@ -27,7 +27,8 @@ public class ShowServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uploadFilePath = this.getServletContext().getRealPath("/WEB-INf/upload");
+		//得到的是服务器的根目录
+		String uploadFilePath = this.getServletContext().getRealPath("/WEB-INF/upload");
 		Map<String, String> fileNameMap = new HashMap<String, String>();
 		listfile(new File(uploadFilePath), fileNameMap);
 		request.setAttribute("fileNameMap", fileNameMap);
@@ -51,14 +52,17 @@ public class ShowServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	public void listfile(File file, Map<String, String> map) {
+		 if(file == null) return;
 		if (!file.isFile()) {
-			File files[] = file.listFiles();
-			for (File f : files) {
-				listfile(f, map);
+			File f[] = file.listFiles();
+			System.out.println(11111);
+			if(f == null) return;
+			for(int i=0;i<f.length;i++){
+				listfile(f[i], map);
 			}
 		} else {
-			String realname = file.getName().substring(file.getName().indexOf("_") + 1);
-			map.put(file.getName(), realname);
+			String realName = file.getName().substring(file.getName().indexOf("_") + 1);
+			map.put(file.getName(), realName);
 		}
 	}
 
