@@ -14,10 +14,10 @@
 		//如果cookies数组不为null，并且它的长度大于0  
 		if (cookies != null && cookies.length > 0) {
 			//就循环遍历每一条cookie  
-			for (Cookie cookie : cookies) {
+			for (Cookie cookie  : cookies) {
 				//如果cookie的名称为session  
 				if ("session".equals(cookie.getName())) {
-					//则读取这个cookie的值，得到sessionid  
+					//则读取这个cookie的值，再得到sessionid  
 					//然后再根据sessionid，获取储存在应用域中的session对象  
 					//强转后，赋值给当前session对象，因为jsp中session对象已经被自动创建，所以这里只需要赋值  
 					session = (HttpSession) application.getAttribute(cookie.getValue());
