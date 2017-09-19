@@ -53,15 +53,16 @@ public class Servlet extends HttpServlet {
 			if (UserDao.login(Integer.parseInt(id), name) != null) {
 				List li = UserDao.last(1);
 				request.setAttribute("li", li);
-				if ("true".equals(free)) {
-					HttpSession session = request.getSession(); // 得到session
-					session.setAttribute("name", name);
+				if ("1".equals(free)) {
+					HttpSession session = request.getSession(); // 得到session，并将用户信息存到session中
 					session.setAttribute("id", id);
-					Cookie cookie = new Cookie("session", session.getId());
-					cookie.setMaxAge(60);
+					session.setAttribute("name", name);
+					Cookie cookie = new Cookie("session", session.getId());//将session的id以键值对的形式存到cookie中
+					cookie.setMaxAge(60*5);
 					response.addCookie(cookie);
 					//此时需要在应用域中添加一个属性，用于储存用户的sessionid和对应的session关系  
-					//以保证后面可以根据sessionid获取到session  
+					//以保证后面可以根据sessionid获取到session ，
+					//因为可以通过session得到sessionid，但是一般不能通过sessionid 得到session，所以通过以下方式设置得到session
 					getServletContext().setAttribute(session.getId(), session); 
 					
 				}

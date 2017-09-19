@@ -66,7 +66,7 @@ public class DownloadServlet extends HttpServlet {
 	}
 
 	// 为什么
-	public String findFileSavePathByFileName(String filename, String saveRootPath) {
+	/*public String findFileSavePathByFileName(String filename, String saveRootPath) {
 		int hashcode = filename.hashCode();
 		int dir1 = hashcode & 0xf;
 		int dir2 = (hashcode & 0xf) >> 4;
@@ -77,5 +77,5 @@ public class DownloadServlet extends HttpServlet {
 		}
 		return dir;
 	}
-
+*/
 }
