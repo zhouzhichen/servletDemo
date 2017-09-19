@@ -10,6 +10,9 @@
 	<%
 		//获取请求中的所有cookie，得到cookies数组  
 		Cookie[] cookies = request.getCookies();
+	
+	
+	
 		//如果cookies数组不为null，并且它的长度大于0  
 		if (cookies != null && cookies.length > 0) {
 			//就循环遍历每一条cookie  
