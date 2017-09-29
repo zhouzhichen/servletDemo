@@ -57,16 +57,26 @@ public class Servlet extends HttpServlet {
 					HttpSession session = request.getSession(); // 得到session，并将用户信息存到session中
 					session.setAttribute("id", id);
 					session.setAttribute("name", name);
-					Cookie cookie = new Cookie("session", session.getId());//将session的id以键值对的形式存到cookie中
-					cookie.setMaxAge(60*5);
-					response.addCookie(cookie);
-					//此时需要在应用域中添加一个属性，用于储存用户的sessionid和对应的session关系  
-					//以保证后面可以根据sessionid获取到session ，
-					//因为可以通过session得到sessionid，但是一般不能通过sessionid 得到session，所以通过以下方式设置得到session
-					getServletContext().setAttribute(session.getId(), session); 
-					
+					Cookie cookie = new Cookie("session", session.getId());// 将session的id以键值对的形式存到cookie中
+					cookie.setMaxAge(60 * 5);
+					response.addCookie(cookie);// response简单理解为 (到)浏览器,添加cookie
+					// 此时需要在应用域中添加一个属性，用于储存用户的sessionid和对应的session关系
+					// 以保证后面可以根据sessionid获取到session ，
+					// 因为可以通过session得到sessionid，但是一般不能通过sessionid 得到session，所以通过以下方式设置得到session
+					getServletContext().setAttribute(session.getId(), session);
+
 				}
 				request.getRequestDispatcher("home.jsp").forward(request, response);
+			}
+		}
+		if ("freeload".equals(method)) {
+			int id = (int) (request.getAttribute("id"));
+			request.getAttribute("name");
+			if (UserDao.select(id) != null) {
+				request.getRequestDispatcher("home.jsp").forward(request, response);
+			}else {
+				request.setAttribute("daydayup", id);
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 			}
 		}
 		if ("insert".equals(method)) {
@@ -89,11 +99,10 @@ public class Servlet extends HttpServlet {
 		}
 		if ("previous".equals(method)) {
 			/*
-			 * int allow=Integer.parseInt(request.getParameter("a"));
-			 * if(allow==1){ allow=2; UserDao.previous(allow);
+			 * int allow=Integer.parseInt(request.getParameter("a")); if(allow==1){ allow=2;
+			 * UserDao.previous(allow);
 			 * 
-			 * }else { UserDao.previous(allow); } request.setAttribute("a",
-			 * allow-1);
+			 * }else { UserDao.previous(allow); } request.setAttribute("a", allow-1);
 			 */
 			List li = new ArrayList();
 			if (a == 1) {
